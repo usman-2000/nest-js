@@ -59,7 +59,15 @@ export class UsersService {
     }
 
     update(id: number, user: { name?: string, email?: string, role?: "Admin" | "Engineer" | "Intern" }) {
+        this.user.map((us) => us.id === id ? { ...us, ...user } : us)
 
+        return this.findOne(id)
+
+    }
+
+    delete(id: number) {
+        this.user.filter((us) => us.id !== id)
+        return this.findOne(id)
     }
 
 }
