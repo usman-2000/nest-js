@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ParseIntPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDTO } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 // ParseIntPipe is a middleware to validate data that the given data is in numbers.
 
@@ -21,15 +23,13 @@ export class UsersController {
     }
 
     @Post() // Post /user
-    create(@Body() user: {
-        name: string, email: string, role: "Admin" | "Engineer" | "Intern"
-    }) {
-        return this.usersService.create(user)
+    create(@Body() createUserDto: CreateUserDTO) {
+        return this.usersService.create(createUserDto)
     }
 
     @Patch(":id") // PATCH  /users/:id
-    update(@Param('id', ParseIntPipe) id: number, @Body() userUpdate: { name?: string, email?: string, role?: "Admin" | "Engineer" | "Intern" }) {
-        return this.usersService.update(id, userUpdate)
+    update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+        return this.usersService.update(id, updateUserDto)
     }
 
     @Delete(":id") // DELETE  /users/:id
