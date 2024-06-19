@@ -1,14 +1,17 @@
 // DTO is a Data transfer object and checks the types that all data is sending correctly. Its a middleware.
-import { IsString, IsInt } from 'class-validator';
+import {
+    IsString, IsEmail, IsNotEmpty, IsEnum
+} from 'class-validator';
 
 
 export class CreateUserDTO {
     @IsString()
+    @IsNotEmpty()
     name: string
 
-    @IsString()
+    @IsEmail()
     email: string
 
-    @IsString()
+    @IsEnum(["Intern", "Admin", "Engineer"], { message: "valid role required" })
     role: "Intern" | "Admin" | "Engineer"
 }
