@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query, ParseIntPipe 
 import { UsersService } from './users.service';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ValidationPipe } from './dto/validation.pipe';
 
 // ParseIntPipe is a middleware to validate data that the given data is in numbers.
 
@@ -23,12 +24,12 @@ export class UsersController {
     }
 
     @Post() // Post /user
-    create(@Body() createUserDto: CreateUserDTO) {
+    create(@Body(new ValidationPipe()) createUserDto: CreateUserDTO) {
         return this.usersService.create(createUserDto)
     }
 
     @Patch(":id") // PATCH  /users/:id
-    update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
+    update(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) updateUserDto: UpdateUserDto) {
         return this.usersService.update(id, updateUserDto)
     }
 
