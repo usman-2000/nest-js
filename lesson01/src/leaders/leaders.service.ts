@@ -4,23 +4,25 @@ import { UpdateLeaderDto } from './dto/update-leader.dto';
 
 @Injectable()
 export class LeadersService {
+
+  private leaders = []
   create(createLeaderDto: CreateLeaderDto) {
-    return 'This action adds a new leader';
+    const leader_id = this.leaders.length + 1
+    const newLeader = {
+      id: leader_id,
+      ...createLeaderDto
+    }
+
+    this.leaders.push(newLeader)
+    return newLeader
   }
 
   findAll() {
-    return `This action returns all leaders`;
+    return this.leaders;
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} leader`;
-  }
-
-  update(id: number, updateLeaderDto: UpdateLeaderDto) {
-    return `This action updates a #${id} leader`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} leader`;
+    const leader = this.leaders.find((l) => l.id === id)
+    return leader
   }
 }

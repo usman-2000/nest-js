@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { LeadersService } from './leaders.service';
 import { CreateLeaderDto } from './dto/create-leader.dto';
 import { UpdateLeaderDto } from './dto/update-leader.dto';
+import { ValidationPipe } from 'src/users/dto/validation.pipe';
 
 @Controller('leaders')
 export class LeadersController {
-  constructor(private readonly leadersService: LeadersService) {}
+  constructor(private readonly leadersService: LeadersService) { }
 
   @Post()
-  create(@Body() createLeaderDto: CreateLeaderDto) {
+  create(@Body(new ValidationPipe()) createLeaderDto: CreateLeaderDto) {
     return this.leadersService.create(createLeaderDto);
   }
 
@@ -18,17 +19,7 @@ export class LeadersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.leadersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLeaderDto: UpdateLeaderDto) {
-    return this.leadersService.update(+id, updateLeaderDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.leadersService.remove(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.leadersService.findOne(id);
   }
 }
