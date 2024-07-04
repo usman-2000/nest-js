@@ -16,7 +16,7 @@ datasource db {
 
 model Employee {
   id Int @unique @default(autoincrement())
-  name String @unique
+  name String 
   email String @unique
   role Role
   createdAt DateTime @default(now())
@@ -24,6 +24,7 @@ model Employee {
 }
 
 enum Role {
-  USER
+  INTERN
+  ENGINEER
   ADMIN
 }
