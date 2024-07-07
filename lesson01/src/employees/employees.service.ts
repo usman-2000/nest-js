@@ -1,25 +1,50 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { DatabaseService } from 'src/database/database.service';
 @Injectable()
 export class EmployeesService {
+
+  constructor(private readonly databaseService: DatabaseService) { }
+
+
   // Prisma. mn hmry pass sb aajata jo hmne migrate kiya hota usky hisab sy khud hi data bana deta hai
-  create(createEmployeeDto: Prisma.EmployeeCreateInput) {
-    return 'This action adds a new employee';
+  async create(createEmployeeDto: Prisma.EmployeeCreateInput) {
+    return this.databaseService.employee.create({
+      data: createEmployeeDto
+    })
   }
 
-  findAll() {
-    return `This action returns all employees`;
+  async findAll(role?: "INTERN" | "ADMIN" | "ENGINEER") {
+    if (role) return this.databaseService.employee.findMany({
+      where: {
+        role
+      }
+    })
+    return this.databaseService.employee.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} employee`;
+  async findOne(id: number) {
+    return this.databaseService.employee.findUnique({
+      where: {
+        id
+      }
+    })
   }
 
-  update(id: number, updateEmployeeDto: Prisma.EmployeeUpdateInput) {
-    return `This action updates a #${id} employee`;
+  async update(id: number, updateEmployeeDto: Prisma.EmployeeUpdateInput) {
+    return this.databaseService.employee.update({
+      where: {
+        id
+      },
+      data: updateEmployeeDto
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
+  async remove(id: number) {
+    return this.databaseService.employee.delete({
+      where: {
+        id
+      }
+    })
   }
 }
