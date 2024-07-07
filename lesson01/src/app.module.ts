@@ -9,9 +9,18 @@ import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 
 @Module({
+  // imports: [UsersModule, LeadersModule, DatabaseModule, EmployeesModule, ThrottlerModule.forRoot([{
+  //   ttl: 60000,
+  //   limit: 3
+  // }])],
   imports: [UsersModule, LeadersModule, DatabaseModule, EmployeesModule, ThrottlerModule.forRoot([{
-    ttl: 60000,
+    name: "short",
+    ttl: 1000,
     limit: 3
+  }, {
+    name: "long",
+    ttl: 60000,
+    limit: 50
   }])],
   controllers: [AppController],
   providers: [AppService, {
